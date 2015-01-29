@@ -1,5 +1,6 @@
 var xhr = require('xhr');
 var clone = require('clone');
+var hat = require('hat');
 
 module.exports = Events;
 
@@ -11,11 +12,13 @@ function Events(options) {
     this.api = options.api || 'https://api.tiles.mapbox.com';
     this.token = options.token;
     this._xhr = xhr;
+    this.instance = hat();
 }
 
 Events.prototype.track = function(obj) {
     obj = clone(obj);
     obj.created = (new Date()).toISOString();
+    obj.instance = this.instance;
     this.queue.push(obj);
     if (this.queue.length >= this.flushAt) this.flush();
     if (this.timer) clearTimeout(this.timer);

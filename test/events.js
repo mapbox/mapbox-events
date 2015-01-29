@@ -2,7 +2,7 @@ var Events = require('..');
 var test = require('tape');
 
 test('track', function(t) {
-    t.plan(4);
+    t.plan(6);
     var events = new Events({
         token: 'token',
         flushAt: 5,
@@ -16,6 +16,8 @@ test('track', function(t) {
         t.equal(options.json.length, 2);
         t.equal(options.method, 'POST');
         t.equal(typeof options.json[0].created, 'string');
+        t.equal(typeof options.json[0].instance, 'string');
+        t.assert(options.json[0].instance == options.json[1].instance, 'instance ids should match');
     };
 
     events.track({bar: 'baz'});
