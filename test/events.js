@@ -1,7 +1,7 @@
 var Events = require('..');
 var test = require('tape');
 
-test('track', function(t) {
+test('push', function(t) {
     t.plan(7);
     var events = new Events({
         token: 'token',
@@ -21,8 +21,8 @@ test('track', function(t) {
         t.assert(options.json[0].instance == options.json[1].instance, 'instance ids should match');
     };
 
-    events.track({bar: 'baz'});
-    events.track({bar: 'baz'});
+    events.push({bar: 'baz'});
+    events.push({bar: 'baz'});
 });
 
 test('_post', function(t) {
@@ -62,11 +62,11 @@ test('flushAt', function(t) {
         t.equal(options.method, 'POST');
     };
 
-    events.track('one');
-    events.track('two');
-    events.track('three');
-    events.track('four');
-    events.track('five');
+    events.push('one');
+    events.push('two');
+    events.push('three');
+    events.push('four');
+    events.push('five');
 });
 
 test('flushAfter', function(t) {
@@ -86,8 +86,8 @@ test('flushAfter', function(t) {
         t.assert(duration > 5000 && duration < 5100, 'should flush after about 5 seconds');
     };
 
-    events.track('one');
-    events.track('two');
+    events.push('one');
+    events.push('two');
 });
 
 test('self instantiation', function(t) {

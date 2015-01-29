@@ -11,7 +11,7 @@ var events = require('events')({
     token: 'mapbox api token'
 });
 
-events.track({
+events.push({
     event: 'foo',
     attribute1: 'foo',
     attribute2: 'bar'

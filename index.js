@@ -15,7 +15,7 @@ function Events(options) {
     this.instance = hat();
 }
 
-Events.prototype.track = function(obj) {
+Events.prototype.push = function(obj) {
     obj = clone(obj);
     obj.version = 1;
     obj.created = (new Date()).toISOString();
