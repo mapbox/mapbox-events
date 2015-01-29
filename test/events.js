@@ -17,8 +17,8 @@ test('track', function(t) {
         t.equal(options.method, 'POST');
     };
 
-    events.track('first', {bar: 'baz'});
-    events.track('second', {bar: 'baz'});
+    events.track({bar: 'baz'});
+    events.track({bar: 'baz'});
 });
 
 test('_post', function(t) {
@@ -58,11 +58,11 @@ test('flushAt', function(t) {
         t.equal(options.method, 'POST');
     };
 
-    events._push('one');
-    events._push('two');
-    events._push('three');
-    events._push('four');
-    events._push('five');
+    events.track('one');
+    events.track('two');
+    events.track('three');
+    events.track('four');
+    events.track('five');
 });
 
 test('flushAfter', function(t) {
@@ -82,8 +82,8 @@ test('flushAfter', function(t) {
         t.assert(duration > 5000 && duration < 5100, 'should flush after about 5 seconds');
     };
 
-    events._push('one');
-    events._push('two');
+    events.track('one');
+    events.track('two');
 });
 
 test('self instantiation', function(t) {

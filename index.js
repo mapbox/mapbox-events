@@ -13,23 +13,16 @@ function Events(options) {
     this._xhr = xhr;
 }
 
-Events.prototype.track = function(name, attributes) {
-    this._push({
-        name: name,
-        attributes: attributes
-    });
+Events.prototype.track = function(obj) {
+    this.queue.push(clone(obj));
+    if (this.queue.length >= this.flushAt) this.flush();
+    if (this.timer) clearTimeout(this.timer);
+    if (this.flushAfter) this.timer = setTimeout(this.flush.bind(this), this.flushAfter);
 };
 
 Events.prototype.flush = function() {
     if (!this.queue.length) return;
     this._post(this.queue.splice(0, this.flushAt));
-};
-
-Events.prototype._push = function(obj) {
-    this.queue.push(clone(obj));
-    if (this.queue.length >= this.flushAt) this.flush();
-    if (this.timer) clearTimeout(this.timer);
-    if (this.flushAfter) this.timer = setTimeout(this.flush.bind(this), this.flushAfter);
 };
 
 Events.prototype._post = function(events, callback) {
