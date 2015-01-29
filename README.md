@@ -1,5 +1,7 @@
-events
-======
+[![Build Status](https://travis-ci.org/mapbox/mapbox-events.svg?branch=master)](https://travis-ci.org/mapbox/mapbox-events)
+
+Mapbox Events
+=============
 Send events from the browser to the Mapbox events API.
 
 ## Example
