@@ -14,7 +14,9 @@ function Events(options) {
 }
 
 Events.prototype.track = function(obj) {
-    this.queue.push(clone(obj));
+    obj = clone(obj);
+    obj.created = (new Date()).toISOString();
+    this.queue.push(obj);
     if (this.queue.length >= this.flushAt) this.flush();
     if (this.timer) clearTimeout(this.timer);
     if (this.flushAfter) this.timer = setTimeout(this.flush.bind(this), this.flushAfter);
