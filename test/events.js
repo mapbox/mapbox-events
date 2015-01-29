@@ -2,7 +2,7 @@ var Events = require('..');
 var test = require('tape');
 
 test('track', function(t) {
-    t.plan(6);
+    t.plan(7);
     var events = new Events({
         token: 'token',
         flushAt: 5,
@@ -15,6 +15,7 @@ test('track', function(t) {
         t.equal(options.uri, 'https://api.tiles.mapbox.com/events/v1?access_token=token');
         t.equal(options.json.length, 2);
         t.equal(options.method, 'POST');
+        t.equal(options.json[0].version, 1);
         t.equal(typeof options.json[0].created, 'string');
         t.equal(typeof options.json[0].instance, 'string');
         t.assert(options.json[0].instance == options.json[1].instance, 'instance ids should match');

@@ -17,6 +17,7 @@ function Events(options) {
 
 Events.prototype.track = function(obj) {
     obj = clone(obj);
+    obj.version = 1;
     obj.created = (new Date()).toISOString();
     obj.instance = this.instance;
     this.queue.push(obj);
