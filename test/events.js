@@ -2,7 +2,7 @@ var Events = require('..');
 var test = require('tape');
 
 test('push', function(t) {
-    t.plan(7);
+    t.plan(8);
     var events = new Events({
         token: 'token',
         flushAt: 5,
@@ -12,13 +12,15 @@ test('push', function(t) {
     });
 
     events._xhr = function(options) {
+        var body = JSON.parse(options.body);
         t.equal(options.uri, 'https://api.tiles.mapbox.com/events/v1?access_token=token');
-        t.equal(options.json.length, 2);
+        t.equal(JSON.parse(options.body).length, 2);
+        t.equal(options.headers['Content-Type'], 'text/plain');
         t.equal(options.method, 'POST');
-        t.equal(options.json[0].version, 1);
-        t.equal(typeof options.json[0].created, 'string');
-        t.equal(typeof options.json[0].instance, 'string');
-        t.assert(options.json[0].instance == options.json[1].instance, 'instance ids should match');
+        t.equal(body[0].version, 1);
+        t.equal(typeof body[0].created, 'string');
+        t.equal(typeof body[0].instance, 'string');
+        t.assert(body[0].instance == body[1].instance, 'instance ids should match');
     };
 
     events.push({bar: 'baz'});
@@ -34,8 +36,9 @@ test('_post', function(t) {
     });
 
     events._xhr = function(options) {
+        var body = JSON.parse(options.body);
         t.equal(options.uri, 'https://api.tiles.mapbox.com/events/v1?access_token=token');
-        t.equal(options.json.length, 2);
+        t.equal(body.length, 2);
         t.equal(options.method, 'POST');
     };
 
@@ -57,8 +60,9 @@ test('flushAt', function(t) {
     });
 
     events._xhr = function(options) {
+        var body = JSON.parse(options.body);
         t.equal(options.uri, 'https://api.tiles.mapbox.com/events/v1?access_token=token');
-        t.equal(options.json.length, 5);
+        t.equal(body.length, 5);
         t.equal(options.method, 'POST');
     };
 
@@ -79,8 +83,9 @@ test('flushAfter', function(t) {
     });
 
     events._xhr = function(options) {
+        var body = JSON.parse(options.body);
         t.equal(options.uri, 'https://api.tiles.mapbox.com/events/v1?access_token=token');
-        t.equal(options.json.length, 2);
+        t.equal(body.length, 2);
         t.equal(options.method, 'POST');
         var duration = Date.now() - start;
         t.assert(duration > 5000 && duration < 5100, 'should flush after about 5 seconds');
