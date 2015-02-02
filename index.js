@@ -31,16 +31,4 @@ Events.prototype.flush = function() {
     this._post(this.queue.splice(0, this.flushAt));
 };
 
-Events.prototype._post = function(events, callback) {
-    callback = callback || function() {};
-    this._xhr({
-        method: 'POST',
-        body: JSON.stringify(events),
-        uri: this.api + '/events/v1?access_token=' + this.token,
-        headers: {
-            // Avoid CORS pre-flight OPTIONS request by smuggling
-            // application/json in as text/plain.
-            'Content-Type': 'text/plain'
-        }
-    }, callback);
-};
+Events.prototype._post = require('./post.js');

@@ -7,7 +7,7 @@ Send events from the browser to the Mapbox events API.
 ## Example
 
 ```javascript
-var events = require('events')({
+var events = require('mapbox-events')({
     token: 'mapbox api token'
 });
 
