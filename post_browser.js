@@ -1,5 +1,7 @@
 module.exports = function(events, callback) {
-    callback = callback || function() {};
+    callback = callback || function(err, res) {
+        console.log(arguments);
+    };
     this._xhr({
         method: 'POST',
         body: JSON.stringify(events),

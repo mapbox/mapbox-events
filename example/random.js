@@ -1,12 +1,10 @@
 var Events = require('../'),
-    faker = require('faker'),
-    argv = require('minimist')(process.argv.slice(2));
-
-if (!argv.token) throw new Error('--token required');
+    faker = require('faker');
 
 var events = new Events({
-    token: argv.token,
-    flushAfter: 1000
+    token: process.env.TOKEN,
+    flushAfter: 1000,
+    api: 'https://api-events-staging.tilestream.net'
 });
 
 function push() {
