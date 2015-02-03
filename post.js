@@ -1,9 +1,7 @@
 var request = require('request');
 
 module.exports = function(events, callback) {
-    callback = callback || function() {
-        console.log(arguments);
-    };
+    callback = callback || function() { };
     request.post({
         body: JSON.stringify(events),
         headers: {
