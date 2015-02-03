@@ -13,6 +13,7 @@ function Events(options) {
     this.token = options.token;
     this._xhr = xhr;
     this.instance = hat();
+    this.anonid = anonid();
 }
 
 Events.prototype.push = function(obj) {
@@ -20,6 +21,7 @@ Events.prototype.push = function(obj) {
     obj.version = 1;
     obj.created = (new Date()).toISOString();
     obj.instance = this.instance;
+    obj.anonid = this.anonid;
     this.queue.push(obj);
     if (this.queue.length >= this.flushAt) this.flush();
     if (this.timer) clearTimeout(this.timer);
@@ -44,3 +46,15 @@ Events.prototype._post = function(events, callback) {
         }
     }, callback);
 };
+
+function anonid() {
+    try {
+        'localStorage' in window && window['localStorage'] !== null;
+    } catch (e) {
+        return null;
+    }
+
+    var id = window.localStorage.getItem('anonid') || hat();
+    window.localStorage.setItem('anonid', id);
+    return id;
+}
