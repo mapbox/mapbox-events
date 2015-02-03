@@ -1,6 +1,6 @@
 {
   "name": "mapbox-events",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Send events from the browser to the Mapbox events API.",
   "main": "index.js",
   "scripts": {
