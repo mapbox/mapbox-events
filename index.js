@@ -1,5 +1,5 @@
 var xhr = require('xhr');
-var clone = require('clone');
+var clone = require('lodash-compat').cloneDeep;
 var hat = require('hat');
 
 module.exports = Events;
