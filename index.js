@@ -1,6 +1,8 @@
 var xhr = require('xhr');
-var clone = require('clone');
+var clone = require('lodash-compat').cloneDeep;
 var hat = require('hat');
+
+var shims = require('./lib/shims.js')();
 
 module.exports = Events;
 
