@@ -32,11 +32,13 @@ Events.prototype.push = function(obj) {
 
 Events.prototype.flush = function() {
     if (!this.queue.length) return;
-    this._post(this.queue.splice(0, this.flushAt));
+    if (window.XDomainRequest) this._compatabilityPost(this.queue.splice(0, this.flushAt));
+    else this._post(this.queue.splice(0, this.flushAt));
 };
 
 Events.prototype._post = function(events, callback) {
     callback = callback || function() {};
+
     this._xhr({
         method: 'POST',
         body: JSON.stringify(events),
@@ -47,6 +49,38 @@ Events.prototype._post = function(events, callback) {
             'Content-Type': 'text/plain'
         }
     }, callback);
+};
+
+Events.prototype._compatabilityPost = function(events, callback) {
+    callback = callback || function() {};
+
+    var xdr = new XDomainRequest();
+
+    xdr.open("post", this.api + '/events/v1?access_token=' + this.token);
+
+    xdr.onprogress = function () {
+    //Progress
+        console.log('progress')
+    };
+
+    xdr.ontimeout = function () {
+    //Timeout
+        console.log('timeout');
+    };
+
+    xdr.onerror = function (err) {
+    //Error Occured
+        console.log('error', err)
+    };
+
+    xdr.onload = function() {
+    //success(xdr.responseText);
+        console.log('load', xdr)
+    }
+
+    setTimeout(function () {
+    xdr.send(JSON.stringify(events));
+    }, 0);
 };
 
 function anonid() {
