@@ -55,32 +55,14 @@ Events.prototype._compatabilityPost = function(events, callback) {
     callback = callback || function() {};
 
     var xdr = new XDomainRequest();
+    var url = this.api + '/events/v1?access_token=' + this.token;
 
-    xdr.open("post", this.api + '/events/v1?access_token=' + this.token);
+    xdr.onload = function() { callback(xdr) };
+    xdr.onerror = function() {};
+    xdr.onprogress = function() {};
 
-    xdr.onprogress = function () {
-    //Progress
-        console.log('progress')
-    };
-
-    xdr.ontimeout = function () {
-    //Timeout
-        console.log('timeout');
-    };
-
-    xdr.onerror = function (err) {
-    //Error Occured
-        console.log('error', err)
-    };
-
-    xdr.onload = function() {
-    //success(xdr.responseText);
-        console.log('load', xdr)
-    }
-
-    setTimeout(function () {
+    xdr.open("post", url);
     xdr.send(JSON.stringify(events));
-    }, 0);
 };
 
 function anonid() {
