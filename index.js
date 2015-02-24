@@ -4,9 +4,6 @@ var hat = require('hat');
 
 var shims = require('./lib/shims.js')();
 
-// so tests pass
-var window = window || null;
-
 module.exports = Events;
 
 function Events(options) {
