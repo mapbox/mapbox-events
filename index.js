@@ -32,7 +32,7 @@ Events.prototype.push = function(obj) {
 
 Events.prototype.flush = function() {
     if (!this.queue.length) return;
-    if (window.XDomainRequest) this._compatabilityPost(this.queue.splice(0, this.flushAt));
+    if (!('withCredentials' in new window.XMLHttpRequest())) this._compatabilityPost(this.queue.splice(0, this.flushAt));
     else this._post(this.queue.splice(0, this.flushAt));
 };
 
@@ -51,6 +51,8 @@ Events.prototype._post = function(events, callback) {
     }, callback);
 };
 
+// Use XDomainRequest to support CORS in IE 8/9.
+// Will send 'text/plain' but without a content-type header.
 Events.prototype._compatabilityPost = function(events, callback) {
     callback = callback || function() {};
 
@@ -61,7 +63,7 @@ Events.prototype._compatabilityPost = function(events, callback) {
     xdr.onerror = function() {};
     xdr.onprogress = function() {};
 
-    xdr.open("post", url);
+    xdr.open('post', url);
     xdr.send(JSON.stringify(events));
 };
 
