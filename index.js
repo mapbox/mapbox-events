@@ -14,7 +14,7 @@ function Events(options) {
     this.api = options.api || 'https://api.tiles.mapbox.com';
     this.token = options.token;
     this._xhr = xhr;
-    this._xdr = (window && !('withCredentials' in new window.XMLHttpRequest())) ? XDomainRequest : null;
+    this._xdr = (typeof window != 'undefined' && !('withCredentials' in new window.XMLHttpRequest())) ? XDomainRequest : null;
     this.instance = hat();
     this.anonid = anonid();
 }
@@ -57,7 +57,7 @@ Events.prototype._post = function(events, callback) {
 Events.prototype._compatabilityPost = function(events, callback) {
     // XDomainRequest doesn't support cross-protocol requests
     var protocol = this.api.match(/^(https?:)?/);
-    if (document && document.location.protocol != protocol[0]) return callback();
+    if (typeof document != 'undefined' && document.location.protocol != protocol[0]) return callback();
 
     callback = callback || function() {};
 
