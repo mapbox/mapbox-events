@@ -4,6 +4,9 @@ var hat = require('hat');
 
 var shims = require('./lib/shims.js')();
 
+// so tests pass
+var window = window || null;
+
 module.exports = Events;
 
 function Events(options) {
@@ -14,6 +17,7 @@ function Events(options) {
     this.api = options.api || 'https://api.tiles.mapbox.com';
     this.token = options.token;
     this._xhr = xhr;
+    this._xdr = (window && !('withCredentials' in new window.XMLHttpRequest())) ? XDomainRequest : null;
     this.instance = hat();
     this.anonid = anonid();
 }
@@ -32,7 +36,7 @@ Events.prototype.push = function(obj) {
 
 Events.prototype.flush = function() {
     if (!this.queue.length) return;
-    if (!('withCredentials' in new window.XMLHttpRequest())) this._compatabilityPost(this.queue.splice(0, this.flushAt));
+    if (this._xdr) this._compatabilityPost(this.queue.splice(0, this.flushAt));
     else this._post(this.queue.splice(0, this.flushAt));
 };
 
@@ -56,7 +60,7 @@ Events.prototype._post = function(events, callback) {
 Events.prototype._compatabilityPost = function(events, callback) {
     callback = callback || function() {};
 
-    var xdr = new XDomainRequest();
+    xdr = new this._xdr();
     var url = this.api + '/events/v1?access_token=' + this.token;
 
     xdr.onload = function() { callback(xdr) };
