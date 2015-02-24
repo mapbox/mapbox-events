@@ -58,6 +58,10 @@ Events.prototype._post = function(events, callback) {
 // Use XDomainRequest to support CORS in IE 8/9.
 // Will send 'text/plain' but without a content-type header.
 Events.prototype._compatabilityPost = function(events, callback) {
+    // XDomainRequest doesn't support cross-protocol requests
+    var protocol = this.api.match(/^(https?:)?/);
+    if (document && document.location.protocol != protocol[0]) return callback();
+
     callback = callback || function() {};
 
     xdr = new this._xdr();
