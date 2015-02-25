@@ -1,8 +1,6 @@
 var xhr = require('xhr');
-var clone = require('lodash-compat').cloneDeep;
+var _ = require('lodash-compat');
 var hat = require('hat');
-
-var shims = require('./lib/shims.js')();
 
 module.exports = Events;
 
@@ -20,15 +18,15 @@ function Events(options) {
 }
 
 Events.prototype.push = function(obj) {
-    obj = clone(obj);
+    obj = _.cloneDeep(obj);
     obj.version = 1;
-    obj.created = (new Date()).toISOString();
+    obj.created = +new Date();
     obj.instance = this.instance;
     obj.anonid = this.anonid;
     this.queue.push(obj);
     if (this.queue.length >= this.flushAt) this.flush();
     if (this.timer) clearTimeout(this.timer);
-    if (this.flushAfter) this.timer = setTimeout(this.flush.bind(this), this.flushAfter);
+    if (this.flushAfter) this.timer = setTimeout(_.bind(this.flush, this), this.flushAfter);
 };
 
 Events.prototype.flush = function() {

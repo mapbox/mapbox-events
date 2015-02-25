@@ -18,7 +18,7 @@ test('push', function(t) {
         t.equal(options.headers['Content-Type'], 'text/plain');
         t.equal(options.method, 'POST');
         t.equal(body[0].version, 1);
-        t.equal(typeof body[0].created, 'string');
+        t.equal(typeof body[0].created, 'number');
         t.equal(typeof body[0].instance, 'string');
         t.assert(body[0].instance == body[1].instance, 'instance ids should match');
     };
@@ -47,7 +47,7 @@ test('push - compatability', function(t) {
                 var body = JSON.parse(body);
                 t.equal(body.length, 2);
                 t.equal(body[0].version, 1);
-                t.equal(typeof body[0].created, 'string');
+                t.equal(typeof body[0].created, 'number');
                 t.equal(typeof body[0].instance, 'string');
                 t.assert(body[0].instance == body[1].instance, 'instance ids should match');
             }
