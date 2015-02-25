@@ -12,7 +12,9 @@ function Events(options) {
     this.api = options.api || 'https://api.tiles.mapbox.com';
     this.token = options.token;
     this._xhr = xhr;
-    this._xdr = (typeof window != 'undefined' && !('withCredentials' in new window.XMLHttpRequest())) ? XDomainRequest : null;
+    this._xdr = (typeof window != 'undefined' &&
+        !('withCredentials' in new window.XMLHttpRequest())) ?
+        XDomainRequest : null;
     this.instance = hat();
     this.anonid = anonid();
 }
