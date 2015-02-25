@@ -18,9 +18,40 @@ test('push', function(t) {
         t.equal(options.headers['Content-Type'], 'text/plain');
         t.equal(options.method, 'POST');
         t.equal(body[0].version, 1);
-        t.equal(typeof body[0].created, 'string');
+        t.equal(typeof body[0].created, 'number');
         t.equal(typeof body[0].instance, 'string');
         t.assert(body[0].instance == body[1].instance, 'instance ids should match');
+    };
+
+    events.push({bar: 'baz'});
+    events.push({bar: 'baz'});
+});
+
+test('push - compatability', function(t) {
+    t.plan(7);
+    var events = new Events({
+        token: 'token',
+        flushAt: 5,
+        flushAfter: 5000
+    }, function(items) {
+        t.equal(items.length, 5);
+    });
+
+    events._xdr = function() {
+        return {
+            open: function open(method, url) {
+                t.equal(method, 'post');
+                t.equal(url, 'https://api.tiles.mapbox.com/events/v1?access_token=token');
+            },
+            send: function send(body) {
+                var body = JSON.parse(body);
+                t.equal(body.length, 2);
+                t.equal(body[0].version, 1);
+                t.equal(typeof body[0].created, 'number');
+                t.equal(typeof body[0].instance, 'string');
+                t.assert(body[0].instance == body[1].instance, 'instance ids should match');
+            }
+        }
     };
 
     events.push({bar: 'baz'});
@@ -43,6 +74,36 @@ test('_post', function(t) {
     };
 
     events._post([{
+        name: 'first',
+        attributes: {bar: 'baz'}
+    }, {
+        name: 'second',
+        attributes: {bar: 'baz'}
+    }]);
+});
+
+test('_compatibilityPost', function(t) {
+    t.plan(3);
+    var events = new Events({
+        token: 'token',
+        flushAt: 5,
+        flushAfter: 5000
+    });
+
+    events._xdr = function() {
+        return {
+            open: function open(method, url) {
+                t.equal(method, 'post');
+                t.equal(url, 'https://api.tiles.mapbox.com/events/v1?access_token=token');
+            },
+            send: function send(body) {
+                var body = JSON.parse(body);
+                t.equal(body.length, 2);
+            }
+        }
+    };
+
+    events._compatabilityPost([{
         name: 'first',
         attributes: {bar: 'baz'}
     }, {
