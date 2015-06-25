@@ -1,6 +1,6 @@
 {
   "name": "mapbox-events",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Send events from the browser to the Mapbox events API.",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,9 @@
     "./post.js": "./post_browser.js"
   },
   "browserify": {
-    "transform": ["envify"]
+    "transform": [
+      "envify"
+    ]
   },
   "dependencies": {
     "lodash-compat": "3.3.0",
