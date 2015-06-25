@@ -1,5 +1,5 @@
 var xhr = require('xhr');
-var clone = require('clone');
+var _ = require('lodash-compat');
 var hat = require('hat');
 
 module.exports = Events;
@@ -12,23 +12,42 @@ function Events(options) {
     this.api = options.api || 'https://api.tiles.mapbox.com';
     this.token = options.token;
     this._xhr = xhr;
+    this._xdr = (typeof window != 'undefined' &&
+        !('withCredentials' in new window.XMLHttpRequest())) ?
+        XDomainRequest : null;
     this.instance = hat();
+    this.anonid = anonid();
 }
 
 Events.prototype.push = function(obj) {
-    obj = clone(obj);
+    obj = _.cloneDeep(obj);
     obj.version = 1;
-    obj.created = (new Date()).toISOString();
+    obj.created = +new Date();
     obj.instance = this.instance;
+    obj.anonid = this.anonid;
     this.queue.push(obj);
     if (this.queue.length >= this.flushAt) this.flush();
     if (this.timer) clearTimeout(this.timer);
-    if (this.flushAfter) this.timer = setTimeout(this.flush.bind(this), this.flushAfter);
+    if (this.flushAfter) this.timer = setTimeout(_.bind(this.flush, this), this.flushAfter);
 };
 
 Events.prototype.flush = function() {
     if (!this.queue.length) return;
-    this._post(this.queue.splice(0, this.flushAt));
+    if (this._xdr) this._compatabilityPost(this.queue.splice(0, this.flushAt));
+    else this._post(this.queue.splice(0, this.flushAt));
 };
 
 Events.prototype._post = require('./post.js');
+Events.prototype._compatabilityPost = require('./compatability_post.js');
+
+function anonid() {
+    try {
+        'localStorage' in window && window['localStorage'] !== null;
+    } catch (e) {
+        return null;
+    }
+
+    var id = window.localStorage.getItem('anonid') || hat();
+    window.localStorage.setItem('anonid', id);
+    return id;
+}
