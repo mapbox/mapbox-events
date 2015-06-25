@@ -11,12 +11,23 @@
     "email": "help@mapbox.com",
     "url": "https://www.mapbox.com/"
   },
+  "browser": {
+    "./post.js": "./post_browser.js"
+  },
+  "browserify": {
+    "transform": ["envify"]
+  },
   "dependencies": {
     "lodash-compat": "3.3.0",
     "hat": "0.0.3",
     "xhr": "^2.0.1"
   },
   "devDependencies": {
+    "dox": "^0.6.1",
+    "doxme": "^1.4.2",
+    "envify": "^3.2.0",
+    "faker": "^2.1.2",
+    "minimist": "^1.1.0",
     "tape": "^3.4.0"
   }
 }

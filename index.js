@@ -33,43 +33,12 @@ Events.prototype.push = function(obj) {
 
 Events.prototype.flush = function() {
     if (!this.queue.length) return;
-    if (this._xdr) this._compatabilityPost(this.queue.splice(0, this.flushAt));
+    if (this._xdr) this._compatibilityPost(this.queue.splice(0, this.flushAt));
     else this._post(this.queue.splice(0, this.flushAt));
 };
 
-Events.prototype._post = function(events, callback) {
-    callback = callback || function() {};
-
-    this._xhr({
-        method: 'POST',
-        body: JSON.stringify(events),
-        uri: this.api + '/events/v1?access_token=' + this.token,
-        headers: {
-            // Avoid CORS pre-flight OPTIONS request by smuggling
-            // application/json in as text/plain.
-            'Content-Type': 'text/plain'
-        }
-    }, callback);
-};
-
-// Use XDomainRequest to support CORS in IE 8/9.
-// Will send 'text/plain' but without a content-type header.
-Events.prototype._compatabilityPost = function(events, callback) {
-    callback = callback || function() {};
-    // XDomainRequest doesn't support cross-protocol requests
-    var protocol = this.api.match(/^(https?:)?/);
-    if (typeof document != 'undefined' && document.location.protocol != protocol[0]) return callback();
-
-    xdr = new this._xdr();
-    var url = this.api + '/events/v1?access_token=' + this.token;
-
-    xdr.onload = function() { callback(xdr) };
-    xdr.onerror = function() {};
-    xdr.onprogress = function() {};
-
-    xdr.open('post', url);
-    xdr.send(JSON.stringify(events));
-};
+Events.prototype._post = require('./post.js');
+Events.prototype._compatibilityPost = require('./compatibility_post.js');
 
 function anonid() {
     try {
