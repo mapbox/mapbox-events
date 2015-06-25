@@ -12,7 +12,7 @@ since the last event was pushed reaches the `flushAfter` threshold.
 
 ```javascript
 var events = require('mapbox-events')({
-    token: 'mapbox api token'
+    token: 'mapbox api token',
     flushAt: 20,
     flushAfter: 10000
 });

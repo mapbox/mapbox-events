@@ -33,12 +33,12 @@ Events.prototype.push = function(obj) {
 
 Events.prototype.flush = function() {
     if (!this.queue.length) return;
-    if (this._xdr) this._compatabilityPost(this.queue.splice(0, this.flushAt));
+    if (this._xdr) this._compatibilityPost(this.queue.splice(0, this.flushAt));
     else this._post(this.queue.splice(0, this.flushAt));
 };
 
 Events.prototype._post = require('./post.js');
-Events.prototype._compatabilityPost = require('./compatability_post.js');
+Events.prototype._compatibilityPost = require('./compatibility_post.js');
 
 function anonid() {
     try {

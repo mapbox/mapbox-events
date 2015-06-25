@@ -1,8 +1,8 @@
-var request = require('request');
 
 module.exports = function(events, callback) {
     callback = callback || function() { };
-    request.post({
+    this._xhr({
+        method: 'POST',
         body: JSON.stringify(events),
         headers: {
             // Avoid CORS pre-flight OPTIONS request by smuggling

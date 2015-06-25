@@ -27,7 +27,7 @@ test('push', function(t) {
     events.push({bar: 'baz'});
 });
 
-test('push - compatability', function(t) {
+test('push - compatibility', function(t) {
     t.plan(7);
     var events = new Events({
         token: 'token',
@@ -103,7 +103,7 @@ test('_compatibilityPost', function(t) {
         }
     };
 
-    events._compatabilityPost([{
+    events._compatibilityPost([{
         name: 'first',
         attributes: {bar: 'baz'}
     }, {
