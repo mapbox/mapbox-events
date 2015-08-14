@@ -42,12 +42,10 @@ Events.prototype._compatibilityPost = require('./compatibility_post.js');
 
 function anonid() {
     try {
-        'localStorage' in window && window['localStorage'] !== null;
-    } catch (e) {
+        var id = window.localStorage.getItem('anonid') || hat();
+        window.localStorage.setItem('anonid', id);
+        return id;
+    } finally {
         return null;
     }
-
-    var id = window.localStorage.getItem('anonid') || hat();
-    window.localStorage.setItem('anonid', id);
-    return id;
 }
