@@ -2,7 +2,7 @@ var Events = require('..');
 var test = require('tape');
 
 test('push', function(t) {
-    t.plan(8);
+    t.plan(9);
     var events = new Events({
         token: 'token',
         flushAt: 5,
@@ -21,6 +21,7 @@ test('push', function(t) {
         t.equal(typeof body[0].created, 'number');
         t.equal(typeof body[0].instance, 'string');
         t.assert(body[0].instance == body[1].instance, 'instance ids should match');
+        t.ok(this.anonid, 'anonid set');
     };
 
     events.push({bar: 'baz'});
