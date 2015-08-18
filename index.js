@@ -45,7 +45,7 @@ function anonid() {
         var id = window.localStorage.getItem('anonid') || hat();
         window.localStorage.setItem('anonid', id);
         return id;
-    } finally {
+    } catch(e) {
         return null;
     }
 }
