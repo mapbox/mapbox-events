@@ -48,6 +48,5 @@ function anonid() {
     } catch(e) {
         if (!this.anonid) this.anonid = hat();
         return this.anonid;
-        // return null;
     }
 }
