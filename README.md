@@ -11,7 +11,7 @@ since the last event was pushed reaches the `flushAfter` threshold.
 ## Example
 
 ```javascript
-var events = require('mapbox-events')({
+var events = require('@mapbox/mapbox-events')({
     token: 'mapbox api token',
     flushAt: 20,
     flushAfter: 10000
