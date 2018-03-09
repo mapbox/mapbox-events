@@ -9,6 +9,7 @@ function Events(options) {
     this.queue = [];
     this.flushAt = Math.max(options.flushAt, 1) || 20;
     this.flushAfter = Math.max(options.flushAfter, 0) || 10000;
+    this.version = options.version || 'v1';
     this.api = options.api || 'https://api.tiles.mapbox.com';
     this.token = options.token;
     this._xhr = xhr;
