@@ -59,6 +59,66 @@ test('push - compatibility', function(t) {
     events.push({bar: 'baz'});
 });
 
+test('push v2', function(t) {
+    t.plan(9);
+    var events = new Events({
+        token: 'token',
+        version: 'v2',
+        flushAt: 5,
+        flushAfter: 5000
+    }, function(items) {
+        t.equal(items.length, 5);
+    });
+
+    events._xhr = function(options) {
+        var body = JSON.parse(options.body);
+        t.equal(options.uri, 'https://api.tiles.mapbox.com/events/v2?access_token=token');
+        t.equal(JSON.parse(options.body).length, 2);
+        t.equal(options.headers['Content-Type'], 'text/plain');
+        t.equal(options.method, 'POST');
+        t.equal(body[0].version, 1);
+        t.equal(typeof body[0].created, 'number');
+        t.equal(typeof body[0].instance, 'string');
+        t.assert(body[0].instance == body[1].instance, 'instance ids should match');
+        t.ok(this.anonid, 'anonid set');
+    };
+
+    events.push({bar: 'baz'});
+    events.push({bar: 'baz'});
+});
+
+test('push - compatibility v2', function(t) {
+    t.plan(7);
+    var events = new Events({
+        token: 'token',
+        version: 'v2',
+        flushAt: 5,
+        flushAfter: 5000
+    }, function(items) {
+        t.equal(items.length, 5);
+    });
+
+    events._xdr = function() {
+        return {
+            open: function open(method, url) {
+                t.equal(method, 'post');
+                t.equal(url, 'https://api.tiles.mapbox.com/events/v2?access_token=token');
+            },
+            send: function send(body) {
+                var body = JSON.parse(body);
+                t.equal(body.length, 2);
+                t.equal(body[0].version, 1);
+                t.equal(typeof body[0].created, 'number');
+                t.equal(typeof body[0].instance, 'string');
+                t.assert(body[0].instance == body[1].instance, 'instance ids should match');
+            }
+        }
+    };
+
+    events.push({bar: 'baz'});
+    events.push({bar: 'baz'});
+});
+
 test('_post', function(t) {
     t.plan(3);
     var events = new Events({
