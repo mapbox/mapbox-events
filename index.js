@@ -9,7 +9,7 @@ function Events(options) {
     this.queue = [];
     this.flushAt = Math.max(options.flushAt, 1) || 20;
     this.flushAfter = Math.max(options.flushAfter, 0) || 10000;
-    this.version = options.version || 'v1';
+    this.version = options.version || 1;
     this.api = options.api || 'https://api.tiles.mapbox.com';
     this.token = options.token;
     this._xhr = xhr;
@@ -22,7 +22,7 @@ function Events(options) {
 
 Events.prototype.push = function(obj) {
     obj = _.cloneDeep(obj);
-    obj.version = 1;
+    obj.version = this.version;
     obj.created = +new Date();
     obj.instance = this.instance;
     obj.anonid = this.anonid;

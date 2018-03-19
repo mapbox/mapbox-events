@@ -9,6 +9,6 @@ module.exports = function(events, callback) {
             // application/json in as text/plain.
             'Content-Type': 'text/plain'
         },
-        uri: this.api + '/events/' + this.version + '?access_token=' + this.token
+        uri: this.api + '/events/v' + this.version.toString() + '?access_token=' + this.token
     }, callback);
 };
