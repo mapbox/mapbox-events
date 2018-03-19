@@ -8,7 +8,7 @@ module.exports = function(events, callback) {
     if (typeof document != 'undefined' && document.location.protocol != protocol[0]) return callback();
 
     xdr = new this._xdr();
-    var url = this.api + '/events/' + this.version + '?access_token=' + this.token;
+    var url = this.api + '/events/v' + this.version.toString() + '?access_token=' + this.token;
 
     xdr.onload = function() { callback(xdr) };
     xdr.onerror = function() {};

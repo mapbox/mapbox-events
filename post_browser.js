@@ -3,7 +3,7 @@ module.exports = function(events, callback) {
     this._xhr({
         method: 'POST',
         body: JSON.stringify(events),
-        uri: this.api + '/events/' + this.version + '?access_token=' + this.token,
+        uri: this.api + '/events/v' + this.version.toString() + '?access_token=' + this.token,
         headers: {
             // Avoid CORS pre-flight OPTIONS request by smuggling
             // application/json in as text/plain.
