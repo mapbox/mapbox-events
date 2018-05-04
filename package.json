@@ -20,10 +20,9 @@
     ]
   },
   "dependencies": {
-    "lodash-compat": "3.3.0",
+    "envify": "^3.2.0",
     "hat": "0.0.3",
-    "xhr": "^2.0.1",
-    "envify": "^3.2.0"
+    "xhr": "^2.0.1"
   },
   "devDependencies": {
     "dox": "^0.6.1",

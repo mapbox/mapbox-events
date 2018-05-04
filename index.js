@@ -1,5 +1,4 @@
 var xhr = require('xhr');
-var _ = require('lodash-compat');
 var hat = require('hat');
 
 module.exports = Events;
@@ -21,7 +20,7 @@ function Events(options) {
 }
 
 Events.prototype.push = function(obj) {
-    obj = _.cloneDeep(obj);
+    obj = JSON.parse(JSON.stringify(obj));
     obj.version = this.version;
     obj.created = +new Date();
     obj.instance = this.instance;
@@ -29,7 +28,7 @@ Events.prototype.push = function(obj) {
     this.queue.push(obj);
     if (this.queue.length >= this.flushAt) this.flush();
     if (this.timer) clearTimeout(this.timer);
-    if (this.flushAfter) this.timer = setTimeout(_.bind(this.flush, this), this.flushAfter);
+    if (this.flushAfter) this.timer = setTimeout(this.flush.bind(this), this.flushAfter);
 };
 
 Events.prototype.flush = function() {
